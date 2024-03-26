@@ -22,231 +22,224 @@ def create_app(active=True, test_config=None):
         return response
 
 # --------------------------------------------------------------
-# Movie
+# Employee
 # --------------------------------------------------------------
 
-    @app.route('/movies', methods=['GET'])
-    @requires_auth('get:movies')
+    @app.route('/employee', methods=['GET'])
+    @requires_auth('get:employee')
     def movies(payload):
         try:
-            movies = Movie.query.all()
-            movie_data = []
-            for movie in movies:
-                movie_data.append({
-                    'id': movie.id,
-                    'title': movie.title,
-                    'release_date': movie.release_date.strftime('%Y-%m-%d')
+            employees = Employee.query.all()
+            employee_data = []
+            for employee in employees:
+                employee_data.append({
+                    'id': employee.id,
+                    'name': employee.name,
+                    'designation': employee.designation
                 })
             response = {
                 'success': True,
-                'Movies': movie_data
+                'employees': employee_data
             }
             return jsonify(response), 200
 
         except Exception as e:
             abort(401)
 
-    @app.route('/movies/<int:movie_id>', methods=['GET'])
-    @requires_auth('get:movies')
-    def movies_detail(payload, movie_id):
+    @app.route('/employee/<int:employee_id>', methods=['GET'])
+    @requires_auth('get:employees')
+    def employee_detail(payload, employee_id):
         try:
-            movie = Movie.query.get(movie_id)
+            employee = Employee.query.get(movie_id)
 
-            if not movie:
+            if not employee:
                 abort(404)
 
             response = {
                 'success': True,
-                'id': movie.id,
-                'title': movie.title,
-                'release_date': movie.release_date.strftime('%Y-%m-%d')
+                'id': employee.id,
+                'name': employee.name,
+                'designation': employee.designation
             }
             return jsonify(response), 200
 
         except Exception as e:
             abort(401)
 
-    @app.route('/movies', methods=['POST'])
-    @requires_auth('post:movies')
-    def add_movie(payload):
+    @app.route('/employee', methods=['POST'])
+    @requires_auth('post:employee')
+    def add_employee(payload):
         try:
 
-            data = request.json
-            title = data['title']
-            release_date = data['release_date']
-
-            new_movie = Movie(title=title, release_date=release_date)
-
-            Movie.insert(new_movie)
-
-            response = {
-                'success': True,
-                'message': 'Movie added successfully',
-                'movie': new_movie.title
-            }
-            return jsonify(response), 201
-
-        except Exception as e:
-            abort(422)
-
-    @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-    @requires_auth('patch:movies')
-    def patch_movie(payload, movie_id):
-        try:
-            movie = Movie.query.get(movie_id)
-
-            if not movie:
-                abort(404)
-
-            upadted_date = request.json
-            title = upadted_date['title']
-            release_date = upadted_date['release_date']
-
-            Movie.patch(movie, title, release_date)
-
-            response = {
-                'success': True,
-                'message': 'Movie updated successfully',
-                'movie': movie.title
-            }
-            return jsonify(response), 201
-
-        except Exception as e:
-            abort(422)
-
-    @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-    @requires_auth('delete:movies')
-    def delete_movie(payload, movie_id):
-        try:
-            movie = Movie.query.get(movie_id)
-
-            if not movie:
-                abort(404)
-
-            Movie.delete(movie)
-
-            response = {
-                'success': True,
-                'message': 'Movie deleted successfully',
-                'movie': movie.title
-            }
-            return jsonify(response), 201
-
-        except Exception as e:
-            abort(422)
-
-# --------------------------------------------------------------
-# Actor
-# --------------------------------------------------------------
-
-    @app.route('/actors', methods=['GET'])
-    @requires_auth('get:actors')
-    def actors(payload):
-        try:
-            actors = Actor.query.all()
-            actor_data = []
-            for actor in actors:
-                actor_data.append({
-                    'id': actor.id,
-                    'name': actor.name,
-                    'age': actor.age,
-                    'gender': actor.gender
-                })
-            response = {
-                'success': True,
-                'Actors': actor_data
-            }
-            return jsonify(response), 200
-
-        except Exception as e:
-            abort(401)
-
-    @app.route('/actors/<int:actor_id>', methods=['GET'])
-    @requires_auth('get:actors')
-    def actor_detail(payload, actor_id):
-        try:
-            actor = Actor.query.get(actor_id)
-
-            if not actor:
-                return jsonify(
-                    {'success': False, 'error': 'Actor Not Found'}), 404
-
-            response = {
-                'success': True,
-                'id': actor.id,
-                'name': actor.name,
-                'age': actor.age,
-                'gender': actor.gender
-            }
-            return jsonify(response), 200
-
-        except Exception as e:
-            abort(401)
-
-    @app.route('/actors', methods=['POST'])
-    @requires_auth('post:actors')
-    def add_actor(payload):
-        try:
             data = request.json
             name = data['name']
-            age = data['age']
-            gender = data['gender']
+            designation = data['designation']
 
-            new_actor = Actor(name=name, age=age, gender=gender)
+            new_employee = Emplyee(name=name, designation=designation)
 
-            Actor.insert(new_actor)
+            Emplyee.insert(new_employee)
 
             response = {
                 'success': True,
-                'message': 'actor added successfully',
-                'actor': new_actor.name
+                'message': 'Employee added successfully',
+                'employee': new_employee.name
+            }
+            return jsonify(response), 201
+
+        except Exception as e:
+            abort(422)
+
+    @app.route('/employee/<int:employee_id>', methods=['PATCH'])
+    @requires_auth('patch:movies')
+    def patch_movie(payload, employee_id):
+        try:
+            employee = Employee.query.get(employee_id)
+
+            if not employee:
+                abort(404)
+
+            updated_data = request.json
+            name = updated_data['name']
+            designation = updated_data['designation']
+
+            Employee.patch(movie, title, release_date)
+
+            response = {
+                'success': True,
+                'message': 'Employee updated successfully',
+                'employee': updated_data.name
+            }
+            return jsonify(response), 201
+
+        except Exception as e:
+            abort(422)
+
+    @app.route('/employee/<int:employee_id>', methods=['DELETE'])
+    @requires_auth('delete:employee')
+    def delete_employeee(payload, employee_id):
+        try:
+            employee = Movie.query.get(employee_id)
+
+            if not employee:
+                abort(404)
+
+            Employee.delete(employee)
+
+            response = {
+                'success': True,
+                'message': 'Employee deleted successfully',
+                'employee': employee.name
+            }
+            return jsonify(response), 201
+
+        except Exception as e:
+            abort(422)
+
+# --------------------------------------------------------------
+# Department
+# --------------------------------------------------------------
+
+    @app.route('/department', methods=['GET'])
+    @requires_auth('get:department')
+    def department(payload):
+        try:
+            departments = Department.query.all()
+            department_data = []
+            for department in departments:
+                department_data.append({
+                    'id': department.id,
+                    'name': department.name,
+                })
+                
+            response = {
+                'success': True,
+                'departments': department_data
+            }
+            return jsonify(response), 200
+
+        except Exception as e:
+            abort(401)
+
+    @app.route('/department/<int:department_id>', methods=['GET'])
+    @requires_auth('get:department')
+    def department_detail(payload, actor_id):
+        try:
+            department = Department.query.get(department_id)
+
+            if not department:
+                return jsonify(
+                    {'success': False, 'error': 'Department Not Found'}), 404
+
+            response = {
+                'success': True,
+                'id': department.id,
+                'name': department.name,
+            }
+            return jsonify(response), 200
+
+        except Exception as e:
+            abort(401)
+
+    @app.route('/department', methods=['POST'])
+    @requires_auth('post:department')
+    def add_actor(payload):
+        try:
+            new_data = request.json
+            name = new_data['name']
+            
+            new_department = Actor(name=name)
+
+            Department.insert(new_department)
+
+            response = {
+                'success': True,
+                'message': 'Department added successfully',
+                'department': new_department.name
             }
             return jsonify(response), 201
 
         except Exception as e:
             abort(400)
 
-    @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-    @requires_auth('patch:actors')
-    def patch_actor(payload, actor_id):
+    @app.route('/department/<int:department_id>', methods=['PATCH'])
+    @requires_auth('patch:department')
+    def patch_department(payload, department_id):
         try:
-            actor = Actor.query.get(actor_id)
+            department = Department.query.get(department_id)
 
-            if not actor:
+            if not department:
                 abort(404)
 
             update_data = request.json
             name = update_data['name']
-            age = update_data['age']
-            gender = update_data['gender']
 
-            Actor.patch(actor, name, age, gender)
+            Department.patch(department, name)
 
             response = {
                 'success': True,
-                'message': 'actor updated successfully',
-                'actor': actor.name
+                'message': 'Department updated successfully',
+                'department': department.name
             }
             return jsonify(response), 201
 
         except Exception as e:
             abort(422)
 
-    @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-    @requires_auth('delete:actors')
-    def delete_actor(payload, actor_id):
+    @app.route('/department/<int:department_id>', methods=['DELETE'])
+    @requires_auth('delete:department')
+    def delete_department(payload, department_id):
         try:
-            actor = Actor.query.get(actor_id)
+            department = Department.query.get(department_id)
 
-            if not actor:
+            if not department:
                 abort(404)
 
-            Actor.delete(actor)
+            Department.delete(department)
 
             response = {
                 'success': True,
-                'message': 'Actor deleted successfully',
-                'actor': actor.name
+                'message': 'Department deleted successfully',
+                'department': department.name
             }
             return jsonify(response), 201
 
