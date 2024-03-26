@@ -95,7 +95,7 @@ def create_app(active=True, test_config=None):
             abort(422)
 
 #  ----------------------------------------------------------------
-#  Employee - DELETE
+#  Employee - PATCH
 #  ----------------------------------------------------------------
     @app.route('/employee/<int:employee_id>', methods=['PATCH'])
     @requires_auth('patch:employee')
