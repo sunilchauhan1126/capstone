@@ -20,13 +20,20 @@ def setup_db(app, database_path=database_path):
     with app.app_context():
         db.create_all()
 
-
+class Joining(db.Model):
+    __tablename__ = 'joining'
+    id = Column(Integer, primary_key=True)
+    employee_id = Column(Integer, ForeignKey('employee.id'))
+    department_id = Column(Integer, ForeignKey('department.id'))
+    joining_date = Column(DateTime, nullable=False)
+    
 class Employee(db.Model):
-    __tablename__ = 'Employee'
+    __tablename__ = 'employee'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     designation = Column(String(50))
+    empployee_dept = relationship('Department', secondary=Joining.__tablename__, backref=db.backref('employee', lazy=True))
 
     def __init__(self, name, designation):
         self.name = name
@@ -57,7 +64,7 @@ class Employee(db.Model):
 
 
 class Department(db.Model):
-    __tablename__ = 'Department'
+    __tablename__ = 'department'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
