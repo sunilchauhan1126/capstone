@@ -57,7 +57,7 @@ This application uses below endpoints
 - PATCH /department/id
 
 - DELETE /employee/id
-- DELETE /employee/id
+- DELETE /department/id
 
 ----------------------------
 
