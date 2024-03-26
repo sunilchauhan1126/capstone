@@ -8,14 +8,14 @@ Getting Started
     - VS Code
     - Postman
 
-#### Python 3.7
+#### Python 3.11
 
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
 
 #### PIP Dependencies
 
-Once you have your environment setup and running, install dependencies by naviging to the `casting` directory and running:
+Once you have your environment setup and running, install dependencies by naviging to the `capstone` directory and running:
 
 ```bash
 pip install -r requirements.txt
@@ -43,19 +43,21 @@ Create 2 models
 
 This application uses below endpoints
 ----------------------------
-- GET /movies
-- GET /actors
-- GET /movies/id
-- GET /actors/id
+- GET /employee
+- GET /department
+- GET /joining
+- GET /employee/id
+- GET /department/id
 
-- POST /movies
-- POST /actors
+- POST /employee
+- POST /department
+- POST /joining
 
-- PATCH /movies/id
-- PATCH /actors/id
+- PATCH /employee/id
+- PATCH /department/id
 
-- DELETE /movies/id
-- DELETE /actors/id
+- DELETE /employee/id
+- DELETE /employee/id
 
 ----------------------------
 
@@ -68,65 +70,71 @@ This application uses below endpoints
 
 3. Create a new, single page web application
 
-4. Create a new API "casting"
+4. Create a new API "capstone"
    - in API Settings:
      - Enable RBAC
      - Enable Add Permissions in the Access Token
 
 5. Create new API permissions
 -----------------------------------------
-   - `get:movies`
-   - `post:movies`
-   - `patch:movies`
-   - `delete:movies`
+   - `get:employee`
+   - `post:employee`
+   - `patch:employee`
+   - `delete:employee`
 ----------------------------------------
-   - `get:actors`
-   - `post:actors`
-   - `patch:actors`
-   - `delete:actors`
+   - `get:department`
+   - `post:department`
+   - `patch:department`
+   - `delete:department`
+----------------------------------------
+   - `get:joining`
+   - `post:joining`
 ----------------------------------------
 
 6. Create new roles for:
-   - Casting Assistant
-        -  `get:movies`
-        -  `get:actors`
+   - Employee Users
+        -  `get:employee`
+        -  `get:department`
+        -  `get:joining`
 
-   - Casting Director
-        -  `get:movies`
-        -  `get:actors`
-        -  `post:actors`
-        -  `patch:actors`
-        -  `delete:movies`
-        -  `patch:movies`
+   - Manager Leads
+        -  `get:employee`
+        -  `get:joining`
+        -  `post:employee`
+        -  `patch:employee`
+        -  `delete:employee`
 
-    - Executive Director
-        -  `get:movies`
-        -  `get:actors`
-        -  `post:actors`
-        -  `patch:movies`
-        -  `patch:actors`
-        -  `patch:movies`
-        -  `delete:movies`
-        -  `delete:actors`
+    - HR Administrator
+        -  `get:employee`
+        -  `get:department`
+        -  `get:joining`
+        -  `post:employee`
+        -  `post:department`
+        -  `post:joining`
+        -  `patch:employee`
+        -  `patch:department`
+        -  `patch:joining`
+        -  `delete:employee`
+        -  `delete:department`
         - can perform all actions
 
 7. Test your endpoints with [Postman](https://getpostman.com).
    - Register 3 users
-        - Assign Casting Assitant Role to one user
-        - Assign Casting Director Role to Another User
-        - Assign Executive Director Role to one more user
+        - Assign Employee Users Role to one user
+        - Assign Manager Leads Role to Another User
+        - Assign HR Administrator Role to one more user
    - Sign into each account and make note of the JWT.
 
-   - Import the postman collection `Casting.postman_collection.json`
+   - Import the postman collection `Capstone.postman_collection.json`
 
-   - Right-clicking the collection folder for casting assistant, casting director and executive producer, navigate to the authorization tab, and including the JWT in the token field (you should have noted these JWTs).
+   - Right-clicking the collection folder for Employee User, Manager Leads, HR Administratorr, navigate to the authorization tab, and including the JWT in the token field (you should have noted these JWTs).
    
    - Run the collection and correct any errors.
    
    - Export the collection overwriting the one we've included so that we have your proper JWTs during review!
 
 ## Application Login URL
-    [casting agency login]
+    [Employee Admin Login]
     https://kavyasrik.us.auth0.com/authorize?audience=casting&response_type=token&client_id=QwwLST9BrD7VoeyhM773l2sT7o1v4Ljg&redirect_uri=https://127.0.0.1:8080/Casting 
 
 ## Render Steps
