@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from auth.auth import requires_auth
-from database.models import Actor, Movie, setup_db
+from database.models import Employee, Department, setup_db
 
 
 def create_app(active=True, test_config=None):
@@ -27,7 +27,7 @@ def create_app(active=True, test_config=None):
 
     @app.route('/employee', methods=['GET'])
     @requires_auth('get:employee')
-    def movies(payload):
+    def employee(payload):
         try:
             employees = Employee.query.all()
             employee_data = []
@@ -50,7 +50,7 @@ def create_app(active=True, test_config=None):
     @requires_auth('get:employees')
     def employee_detail(payload, employee_id):
         try:
-            employee = Employee.query.get(movie_id)
+            employee = Employee.query.get(employee_id)
 
             if not employee:
                 abort(404)
@@ -71,9 +71,9 @@ def create_app(active=True, test_config=None):
     def add_employee(payload):
         try:
 
-            data = request.json
-            name = data['name']
-            designation = data['designation']
+            new_data = request.json
+            name = new_data['name']
+            designation = new_data['designation']
 
             new_employee = Emplyee(name=name, designation=designation)
 
@@ -90,8 +90,8 @@ def create_app(active=True, test_config=None):
             abort(422)
 
     @app.route('/employee/<int:employee_id>', methods=['PATCH'])
-    @requires_auth('patch:movies')
-    def patch_movie(payload, employee_id):
+    @requires_auth('patch:employee')
+    def patch_employee(payload, employee_id):
         try:
             employee = Employee.query.get(employee_id)
 
@@ -102,7 +102,7 @@ def create_app(active=True, test_config=None):
             name = updated_data['name']
             designation = updated_data['designation']
 
-            Employee.patch(movie, title, release_date)
+            Employee.patch(employee, title, release_date)
 
             response = {
                 'success': True,
@@ -118,7 +118,7 @@ def create_app(active=True, test_config=None):
     @requires_auth('delete:employee')
     def delete_employeee(payload, employee_id):
         try:
-            employee = Movie.query.get(employee_id)
+            employee = Employee.query.get(employee_id)
 
             if not employee:
                 abort(404)
@@ -162,7 +162,7 @@ def create_app(active=True, test_config=None):
 
     @app.route('/department/<int:department_id>', methods=['GET'])
     @requires_auth('get:department')
-    def department_detail(payload, actor_id):
+    def department_detail(payload, department_id):
         try:
             department = Department.query.get(department_id)
 
@@ -182,12 +182,12 @@ def create_app(active=True, test_config=None):
 
     @app.route('/department', methods=['POST'])
     @requires_auth('post:department')
-    def add_actor(payload):
+    def add_department(payload):
         try:
             new_data = request.json
             name = new_data['name']
             
-            new_department = Actor(name=name)
+            new_department = Department(name=name)
 
             Department.insert(new_department)
 
