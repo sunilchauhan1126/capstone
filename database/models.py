@@ -21,38 +21,34 @@ def setup_db(app, database_path=database_path):
         db.create_all()
 
 
-class Actor(db.Model):
-    __tablename__ = 'Actor'
+class Employee(db.Model):
+    __tablename__ = 'Employee'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(120))
-    age = Column(Integer)
-    gender = Column(String(6))
+    name = Column(String(50))
+    designation = Column(String(50))
 
-    def __init__(self, name, age, gender):
+    def __init__(self, name, designation):
         self.name = name
-        self.age = age
-        self.gender = gender
+        self.designation = designation
 
     def __repr__(self):
-        return f"<Actor {self.id}: {self.name}>"
+        return f"<Employee {self.id}: {self.name}>"
 
     def format(self):
         return {
             'id': self.id,
             'name': self.name,
-            'age': self.age,
-            'gender': self.gender
+            'designation': self.designation
         }
 
     def insert(self):
         db.session.add(self)
         db.session.commit()
 
-    def patch(self, name, age, gender):
+    def patch(self, name, designation):
         self.name = name
-        self.age = age
-        self.gender = gender
+        self.designation = designation
         db.session.commit()
 
     def delete(self):
@@ -60,34 +56,30 @@ class Actor(db.Model):
         db.session.commit()
 
 
-class Movie(db.Model):
-    __tablename__ = 'Movie'
+class Department(db.Model):
+    __tablename__ = 'Department'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String)
-    release_date = Column(Date)
+    name = Column(String)
 
-    def __init__(self, title, release_date):
-        self.title = title
-        self.release_date = release_date
+    def __init__(self, name):
+        self.name = name
 
     def __repr__(self):
-        return f"<Movie {self.id}: {self.title}>"
+        return f"<Department {self.id}: {self.name}>"
 
     def format(self):
         return {
             'id': self.id,
-            'title': self.title,
-            'release_date': self.release_date
+            'name': self.name
         }
 
     def insert(self):
         db.session.add(self)
         db.session.commit()
 
-    def patch(self, title, release_date):
-        self.title = title
-        self.release_date = release_date
+    def patch(self, name):
+        self.name = name
         db.session.commit()
 
     def delete(self):
