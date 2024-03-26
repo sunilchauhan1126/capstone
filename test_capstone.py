@@ -57,7 +57,7 @@ class CapstoneTestCase(unittest.TestCase):
         pass
 
     # ----------------------------------------
-    # Movies
+    # Employee
     # ----------------------------------------
 
     def test_get_employee_without_authentication(self):
@@ -119,13 +119,13 @@ class CapstoneTestCase(unittest.TestCase):
     def test_post_department_with_authentication(self):
 
         response = self.client().post(
-            '/department', json=self.new_actor, headers=self.headers)
+            '/department', json=self.new_department, headers=self.headers)
         print(response)
 
         self.assertEqual(response.status_code, 201)
 
     def test_update_department(self):
-        actor_id = 6
+        department_id = 6
         response = self.client().patch(
             f'/department/{departmentr_id}', json=self.updated_department_data, headers=self.headers)
         data = response.get_json()
