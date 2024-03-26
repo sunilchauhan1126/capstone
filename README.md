@@ -1,4 +1,4 @@
-# Casting Agency
+# Project Capstone
 
 ## Final Project
 
