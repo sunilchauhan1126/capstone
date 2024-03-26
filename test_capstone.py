@@ -8,17 +8,13 @@ from models import setup_db, Question, Category
 from settings import TEST_DB_NAME, DB_PASSWORD, DB_USER, DB_CONN_STRING
 from dotenv import load_dotenv
 
+database_path = os.environ['DATABASE_URL']
+if database_path.startswith("postgres://"):
+    database_path = database_path.replace("postgres://", "postgresql://", 1)
 
 class CapstoneTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = create_app(active=False)
-        self.client = self.app.test_client
-        self.database_name = 'postgres'
-        self.database_path = 'postgresql://{}:{}@{}/{}'.format(
-            DB_user, DB_password, DB_host, self.database_name)
-        setup_db(self.app)
-
         self.app = create_app(flag_db=False)
         self.client = self.app.test_client
         self.database_name = TEST_DB_NAME
@@ -26,7 +22,6 @@ class CapstoneTestCase(unittest.TestCase):
 
         setup_db(self.app, self.database_path)
 
-        self.new_question = {"question": "Who am I", "answer": "Sunil Chauhan", "category": "5", "difficulty": "2"}
         self.token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNub24zeFAwRE1NTERxdzd0cEppNSJ9.eyJpc3MiOiJodHRwczovL2thdnlhc3Jpay51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjVmYzYyYmQ4OWVlYmM0YjgyZjJkNTQzIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTcxMTM5MjYyNCwiZXhwIjoxNzExMzk5ODI0LCJzY29wZSI6IiIsImF6cCI6IlF3d0xTVDlCckQ3Vm9leWhNNzczbDJzVDdvMXY0TGpnIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.YR7-B5yv13teYFdugb2wG6l4vS6v1Ni8V-jw1HVsKATT6Rgg9Tu-GoWsafZzb3xKk-KfQ4KYeUFKDWh7rgiyayTOB7TwMnbYd415QsmEO8Fexi2jFffU22nYHNlKsUy_C11bBwSPtfpCZ8FtkYYZUCte6PLf9AuRhSQGjQDrzLse8_19jI0wDqM9Nrpv9mTwDcSRzKxLfIPpV3f4aY_G_9PjhxU7PlS8nAC0kKxdksgWvxfj8u0SLytzZypyXPbUqANE-fzgKXqPvR11LRyygsk4wga2sSEDBWwWLT6NBlaH2riUf_CERQuJk9T3OjZ0g2GKZhqloYmC8Ghepxx1_A'
 
         self.headers = {
@@ -34,30 +29,26 @@ class CapstoneTestCase(unittest.TestCase):
             'Authorization': 'Bearer {}'.format(self.token)
         }
 
-        self.new_movie = {
-            "title": "Billa",
-            "release_date": "2017-05-16"
+        self.new_employee = {
+            "name": "New Test Employee",
+            "designation": New Test Designation"
         }
 
-        self.new_actor = {
-            "name": "Goundamani",
-            "age": 78,
-            "gender": "Male"
+        self.new_department = {
+            "name": "New Test Department",
         }
 
-        self.movie_id_del = 4
+        self.employee_id_del = 4
 
-        self.actor_id_del = 4
+        self.department_id_del = 4
 
-        self.updated_movie_data = {
-            "title": "Update Movie",
-            "release_date": "2022-01-01"
+        self.updated_employee_data = {
+            "name": "Update Test Employee",
+            "designation": "Update Test Designation"
         }
 
-        self.updated_actor_data = {
-            "name": "Update Name",
-            "age": 40,
-            "gender": "Female"
+        self.updated_department_data = {
+            "name": "Update Test Department",
         }
 
     def tearDown(self):
@@ -69,85 +60,85 @@ class CapstoneTestCase(unittest.TestCase):
     # Movies
     # ----------------------------------------
 
-    def test_get_movies_without_authentication(self):
-        response = self.client().get('/movies')
+    def test_get_employee_without_authentication(self):
+        response = self.client().get('/employee')
         print(response)
 
         self.assertEqual(response.status_code, 401)
 
-    def test_get_movies_with_authentication(self):
-        response = self.client().get('/movies', headers=self.headers)
+    def test_get_employee_with_authentication(self):
+        response = self.client().get('/employee', headers=self.headers)
         print(response)
 
         self.assertEqual(response.status_code, 200)
         print(response.data)
 
-    def test_post_movies_with_authentication(self):
+    def test_post_employee_with_authentication(self):
         response = self.client().post(
-            '/movies', json=self.new_movie, headers=self.headers)
+            '/employee', json=self.new_employee, headers=self.headers)
         print(response)
 
         self.assertEqual(response.status_code, 201)
 
-    def test_update_movie(self):
-        movie_id = 2
+    def test_update_employee(self):
+        employee_id = 2
         response = self.client().patch(
-            f'/movies/{movie_id}', json=self.updated_movie_data, headers=self.headers)
+            f'/employee/{employee_id}', json=self.updated_employee_data, headers=self.headers)
         data = response.get_json()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(data['success'])
 
-    def test_delete_movie(self):
+    def test_delete_employee(self):
 
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
         }
         response = self.client().delete(
-            f'/movies/{self.movie_id_del}', headers=headers)
+            f'/employee/{self.employee_id_del}', headers=headers)
         data = response.get_json()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(data['success'])
 
     # ----------------------------------------
-    # Actors
+    # Department
     # ----------------------------------------
 
-    def test_get_actors_without_authentication(self):
-        response = self.client().get('/actors')
+    def test_get_department_without_authentication(self):
+        response = self.client().get('/department')
         print(response)
 
         self.assertEqual(response.status_code, 401)
 
-    def test_get_actors_with_authentication(self):
-        response = self.client().get('/actors', headers=self.headers)
+    def test_get_department_with_authentication(self):
+        response = self.client().get('/department', headers=self.headers)
         print(response)
 
         self.assertEqual(response.status_code, 200)
         print(response.data)
 
-    def test_post_actors_with_authentication(self):
+    def test_post_department_with_authentication(self):
 
         response = self.client().post(
-            '/actors', json=self.new_actor, headers=self.headers)
+            '/department', json=self.new_actor, headers=self.headers)
         print(response)
 
         self.assertEqual(response.status_code, 201)
 
-    def test_update_actor(self):
+    def test_update_department(self):
         actor_id = 6
         response = self.client().patch(
-            f'/actors/{actor_id}', json=self.updated_actor_data, headers=self.headers)
+            f'/department/{departmentr_id}', json=self.updated_department_data, headers=self.headers)
         data = response.get_json()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(data['success'])
 
-    def test_delete_actor(self):
+    def test_delete_department(self):
 
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
         }
         response = self.client().delete(
-            f'/actors/{self.actor_id_del}', headers=headers)
+            f'/department/{self.department_id_del}', headers=headers)
         data = response.get_json()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(data['success'])
