@@ -3,7 +3,11 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from auth.auth import requires_auth
 from database.models import Employee, Department, Joining, setup_db
-
+from sqlalchemy import func
+import dateutil.parser
+import babel
+from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from datetime import datetime
 
 def create_app(active=True, test_config=None):
     app = Flask(__name__)
@@ -35,11 +39,11 @@ def create_app(active=True, test_config=None):
                     'id': employee.id,
                     'name': employee.name,
                     'designation': employee.designation
-                })
+                    })
             response = {
                 'success': True,
                 'employees': employee_data
-            }
+                }
             return jsonify(response), 200
 
         except Exception as e:
@@ -62,7 +66,7 @@ def create_app(active=True, test_config=None):
                 'id': employee.id,
                 'name': employee.name,
                 'designation': employee.designation
-            }
+                }
             return jsonify(response), 200
 
         except Exception as e:
@@ -80,15 +84,15 @@ def create_app(active=True, test_config=None):
             name = new_data['name']
             designation = new_data['designation']
 
-            new_employee = Emplyee(name=name, designation=designation)
+            new_employee = Employee(name=name, designation=designation)
 
-            Emplyee.insert(new_employee)
+            Employee.insert(new_employee)
 
             response = {
                 'success': True,
                 'message': 'Employee added successfully',
                 'employee': new_employee.name
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
@@ -110,13 +114,13 @@ def create_app(active=True, test_config=None):
             name = updated_data['name']
             designation = updated_data['designation']
 
-            Employee.patch(employee, title, release_date)
+            Employee.patch(employee, name, designation)
 
             response = {
                 'success': True,
                 'message': 'Employee updated successfully',
                 'employee': updated_data.name
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
@@ -140,6 +144,7 @@ def create_app(active=True, test_config=None):
                 'success': True,
                 'message': 'Employee deleted successfully',
                 'employee': employee.name
+                
             }
             return jsonify(response), 201
 
@@ -158,13 +163,13 @@ def create_app(active=True, test_config=None):
             for department in departments:
                 department_data.append({
                     'id': department.id,
-                    'name': department.name,
-                })
+                    'name': department.name
+                    })
                 
             response = {
                 'success': True,
                 'departments': department_data
-            }
+                }
             return jsonify(response), 200
 
         except Exception as e:
@@ -186,8 +191,8 @@ def create_app(active=True, test_config=None):
             response = {
                 'success': True,
                 'id': department.id,
-                'name': department.name,
-            }
+                'name': department.name
+                }
             return jsonify(response), 200
 
         except Exception as e:
@@ -211,7 +216,7 @@ def create_app(active=True, test_config=None):
                 'success': True,
                 'message': 'Department added successfully',
                 'department': new_department.name
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
@@ -238,7 +243,7 @@ def create_app(active=True, test_config=None):
                 'success': True,
                 'message': 'Department updated successfully',
                 'department': department.name
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
@@ -262,13 +267,13 @@ def create_app(active=True, test_config=None):
                 'success': True,
                 'message': 'Department deleted successfully',
                 'department': department.name
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
             abort(422)
 
-    return app
+
 
 #  ----------------------------------------------------------------
 #  Joining - GET ALL
@@ -277,7 +282,7 @@ def create_app(active=True, test_config=None):
     @requires_auth('get:joining')
     def joining(payload):
         try:
-            joinings = db.session.query(Employee.id, Employee.name, Department.id, Department.name, Joining.joining_date).join(Joining, Joining.employee_id == Employee.id).join(Department, Department.id == Joining.department_id).all()
+            joinings = Joining.query(Employee.id, Employee.name, Department.id, Department.name, Joining.joining_date).join(Joining, Joining.employee_id == Employee.id).join(Department, Department.id == Joining.department_id).all()
             joining_data = []
             for joining in joinings:
                 joining_data.append({
@@ -287,13 +292,12 @@ def create_app(active=True, test_config=None):
                     "department_name": joining[3],
                     "joining_date": str(joining[4])
                     })
-            db.session.close()
                     
             response = {
                     'success': True,
                     'joining': joining_data
-                }
-            return jsonify(response), 200
+                    }
+            return jsonify(response), 201
     
         except Exception as e:
             abort(401)
@@ -318,13 +322,15 @@ def create_app(active=True, test_config=None):
                 'success': True,
                 'message': 'Joining added successfully',
                 'employee': new_joining.id
-            }
+                }
             return jsonify(response), 201
 
         except Exception as e:
             abort(400)
+    return app
 
 app = create_app()
+
 
 if __name__ == '__main__':
     app.run()

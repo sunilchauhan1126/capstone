@@ -135,7 +135,7 @@ This application uses below endpoints
 
 ## Application Login URL
     [Employee Admin Login]
-    https://kavyasrik.us.auth0.com/authorize?audience=casting&response_type=token&client_id=QwwLST9BrD7VoeyhM773l2sT7o1v4Ljg&redirect_uri=https://127.0.0.1:8080/Casting 
+   https://dev-44rtmev4pptlyduw.us.auth0.com/authorize?audience=coffee&response_type=token&client_id=uRTeAazrQmdXUc78TJC3IPKC06wb3O0m&redirect_uri=https://127.0.0.1:8080/login-results
 
 ## Render Steps
 
