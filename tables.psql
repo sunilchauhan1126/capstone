@@ -20,25 +20,24 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: books; Type: TABLE; Schema: public; Owner: student/postgres
+-- Name: employee; Type: TABLE; Schema: public; Owner: student/postgres
 --
-DROP TABLE IF EXISTS public.books CASCADE;
+DROP TABLE IF EXISTS public.employee CASCADE;
 
-CREATE TABLE public.books (
+CREATE TABLE public.employee (
     id integer NOT NULL,
-    title character varying,
-    author character varying,
-    rating integer
+    name character varying,
+    designation character varying
 );
 
-ALTER TABLE public.books OWNER TO student;
+ALTER TABLE public.employee OWNER TO student;
 
 --
--- Name: books_id_seq; Type: SEQUENCE; Schema: public; Owner: student/postgres
+-- Name: employee_id_seq; Type: SEQUENCE; Schema: public; Owner: student/postgres
 --
-DROP SEQUENCE IF EXISTS public.books_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.employee_id_seq CASCADE;
 
-CREATE SEQUENCE public.books_id_seq
+CREATE SEQUENCE public.employee_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -47,59 +46,53 @@ CREATE SEQUENCE public.books_id_seq
 
 
 
-ALTER TABLE public.books_id_seq OWNER TO student;
+ALTER TABLE public.employee_id_seq OWNER TO student;
 
 --
--- Name: books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student/postgres
+-- Name: employee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student/postgres
 --
 
-ALTER SEQUENCE public.books_id_seq OWNED BY public.books.id;
-
-
---
--- Name: books id; Type: DEFAULT; Schema: public; Owner: student/postgres
---
-
-ALTER TABLE ONLY public.books ALTER COLUMN id SET DEFAULT nextval('public.books_id_seq'::regclass);
+ALTER SEQUENCE public.employee_id_seq OWNED BY public.employee.id;
 
 
 --
--- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: student/postgres
+-- Name: employee id; Type: DEFAULT; Schema: public; Owner: student/postgres
 --
 
-COPY public.books (id, title, author, rating) FROM stdin;
-3	The Great Alone	Kristin Hannah	4
-6	Lullaby	Leila Slimani	2
-7	Immigrant, Montana	Amitava Kumar	5
-13	All We Ever Wanted	Emily Giffin	4
-14	We Fed an Island	Jose Andres	4
-16	The Maze at Windermere	Gregory Blake Smith	2
-4	Educated: A Memoir	Tara Westover	5
-10	An American Marriage	Tayari Jones	5
-8	CIRCE	Madeline Miller	5
-11	12 Rules for Life: An Antidote to Chaos	Jordan B. Peterson	5
-12	Heavy: An American Memoir	Kiese Laymon	1
-15	The Mars Room	Rachel Kushner	1
-1	The Outsider: A Novel	Stephen King	5
-2	Asymmetry: A Novel	Lisa Halliday	4
-9	Insurrecto: A Novel	Gina Apostol	5
-5	Still Me: A Novel	Jojo Moyes	5
+ALTER TABLE ONLY public.employee ALTER COLUMN id SET DEFAULT nextval('public.employee_id_seq'::regclass);
+
+
+--
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: student/postgres
+--
+
+COPY public.employee (id, name, designation) FROM stdin;
+1	Sunil Chauhan	Principal Engg
+2	Rajiv Jindal	Testing Manager
+3	Ankush Chopra	Scrum Master
+4	Anubhav Sehgal	Designer
+5	KP Singh	Designer
+6	Sanjeev Bajaj	HR Admin
+7	Rohit Katoch	Principal Engg
+8	Mukesh Kumar	RTM
+9	Amit Jain	Executive Director
+10	Rishit Chauhan	Developer
 \.
 
 
 --
--- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student/postgres
+-- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student/postgres
 --
 
-SELECT pg_catalog.setval('public.books_id_seq', 22, true);
+SELECT pg_catalog.setval('public.employee_id_seq', 22, true);
 
 
 --
--- Name: books books_pkey; Type: CONSTRAINT; Schema: public; Owner: student/postgres
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: student/postgres
 --
 
-ALTER TABLE ONLY public.books
-    ADD CONSTRAINT books_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (id);
 
 
 --
