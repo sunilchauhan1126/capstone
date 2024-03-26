@@ -1,23 +1,15 @@
-
 import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
 
-from api import create_app
-from database.models import setup_db, Actor, Movie, db
-
+from flaskr import create_app
+from models import setup_db, Question, Category
+from settings import TEST_DB_NAME, DB_PASSWORD, DB_USER, DB_CONN_STRING
 from dotenv import load_dotenv
 
-load_dotenv()
 
-DB_user = os.getenv('DB_user')
-DB_host = os.getenv('DB_host')
-DB_name = os.getenv('DB_name')
-DB_password = os.getenv('DB_password')
-
-
-class CastingTestCase(unittest.TestCase):
+class CapstoneTestCase(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app(active=False)
@@ -26,6 +18,15 @@ class CastingTestCase(unittest.TestCase):
         self.database_path = 'postgresql://{}:{}@{}/{}'.format(
             DB_user, DB_password, DB_host, self.database_name)
         setup_db(self.app)
+
+        self.app = create_app(flag_db=False)
+        self.client = self.app.test_client
+        self.database_name = TEST_DB_NAME
+        self.database_path = "postgresql://{}:{}@{}/{}".format(DB_USER, DB_PASSWORD, DB_CONN_STRING, self.database_name)
+
+        setup_db(self.app, self.database_path)
+
+        self.new_question = {"question": "Who am I", "answer": "Sunil Chauhan", "category": "5", "difficulty": "2"}
         self.token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNub24zeFAwRE1NTERxdzd0cEppNSJ9.eyJpc3MiOiJodHRwczovL2thdnlhc3Jpay51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjVmYzYyYmQ4OWVlYmM0YjgyZjJkNTQzIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTcxMTM5MjYyNCwiZXhwIjoxNzExMzk5ODI0LCJzY29wZSI6IiIsImF6cCI6IlF3d0xTVDlCckQ3Vm9leWhNNzczbDJzVDdvMXY0TGpnIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.YR7-B5yv13teYFdugb2wG6l4vS6v1Ni8V-jw1HVsKATT6Rgg9Tu-GoWsafZzb3xKk-KfQ4KYeUFKDWh7rgiyayTOB7TwMnbYd415QsmEO8Fexi2jFffU22nYHNlKsUy_C11bBwSPtfpCZ8FtkYYZUCte6PLf9AuRhSQGjQDrzLse8_19jI0wDqM9Nrpv9mTwDcSRzKxLfIPpV3f4aY_G_9PjhxU7PlS8nAC0kKxdksgWvxfj8u0SLytzZypyXPbUqANE-fzgKXqPvR11LRyygsk4wga2sSEDBWwWLT6NBlaH2riUf_CERQuJk9T3OjZ0g2GKZhqloYmC8Ghepxx1_A'
 
         self.headers = {
