@@ -1,6 +1,8 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-DB_NAME = 'postgres'
-DB_USER = 'postgres'
-DB_URI = 'localhost:5432'
+from dotenv import load_dotenv 
+import os 
+load_dotenv() 
+DB_NAME = os.environ.get("DB_NAME") 
+DB_USER = os.environ.get("DB_USER") 
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_CONN_STRING = os.environ.get("DB_CONN_STRING")
+TEST_DB_NAME = os.environ.get("TEST_DB_NAME")
