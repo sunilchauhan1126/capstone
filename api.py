@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from auth.auth import requires_auth
-from database.models import Employee, Department, setup_db
+from database.models import Employee, Department, Joining, setup_db
 
 
 def create_app(active=True, test_config=None):
@@ -21,10 +21,9 @@ def create_app(active=True, test_config=None):
                              'GET, POST, PUT, PATCH, DELETE')
         return response
 
-# --------------------------------------------------------------
-# Employee
-# --------------------------------------------------------------
-
+#  ----------------------------------------------------------------
+#  Employee - GET ALL
+#  ----------------------------------------------------------------
     @app.route('/employee', methods=['GET'])
     @requires_auth('get:employee')
     def employee(payload):
@@ -46,6 +45,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(401)
 
+#  ----------------------------------------------------------------
+#  Employee - GET for ID
+#  ----------------------------------------------------------------
     @app.route('/employee/<int:employee_id>', methods=['GET'])
     @requires_auth('get:employees')
     def employee_detail(payload, employee_id):
@@ -66,6 +68,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(401)
 
+#  ----------------------------------------------------------------
+#  Employee - POST
+#  ----------------------------------------------------------------
     @app.route('/employee', methods=['POST'])
     @requires_auth('post:employee')
     def add_employee(payload):
@@ -89,6 +94,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(422)
 
+#  ----------------------------------------------------------------
+#  Employee - DELETE
+#  ----------------------------------------------------------------
     @app.route('/employee/<int:employee_id>', methods=['PATCH'])
     @requires_auth('patch:employee')
     def patch_employee(payload, employee_id):
@@ -114,6 +122,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(422)
 
+#  ----------------------------------------------------------------
+#  Employee - DELETE
+#  ----------------------------------------------------------------
     @app.route('/employee/<int:employee_id>', methods=['DELETE'])
     @requires_auth('delete:employee')
     def delete_employeee(payload, employee_id):
@@ -135,10 +146,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(422)
 
-# --------------------------------------------------------------
-# Department
-# --------------------------------------------------------------
-
+#  ----------------------------------------------------------------
+#  Department - GET ALL
+#  ----------------------------------------------------------------
     @app.route('/department', methods=['GET'])
     @requires_auth('get:department')
     def department(payload):
@@ -160,6 +170,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(401)
 
+#  ----------------------------------------------------------------
+#  Department - GET for ID
+#  ----------------------------------------------------------------
     @app.route('/department/<int:department_id>', methods=['GET'])
     @requires_auth('get:department')
     def department_detail(payload, department_id):
@@ -179,7 +192,10 @@ def create_app(active=True, test_config=None):
 
         except Exception as e:
             abort(401)
-
+            
+#  ----------------------------------------------------------------
+#  Department - POST
+#  ----------------------------------------------------------------    
     @app.route('/department', methods=['POST'])
     @requires_auth('post:department')
     def add_department(payload):
@@ -201,6 +217,9 @@ def create_app(active=True, test_config=None):
         except Exception as e:
             abort(400)
 
+#  ----------------------------------------------------------------
+#  Department - PATCH
+#  ----------------------------------------------------------------
     @app.route('/department/<int:department_id>', methods=['PATCH'])
     @requires_auth('patch:department')
     def patch_department(payload, department_id):
@@ -224,7 +243,10 @@ def create_app(active=True, test_config=None):
 
         except Exception as e:
             abort(422)
-
+            
+#  ----------------------------------------------------------------
+#  Department - DELETE
+#  ----------------------------------------------------------------
     @app.route('/department/<int:department_id>', methods=['DELETE'])
     @requires_auth('delete:department')
     def delete_department(payload, department_id):
@@ -248,6 +270,59 @@ def create_app(active=True, test_config=None):
 
     return app
 
+#  ----------------------------------------------------------------
+#  Joining - GET ALL
+#  ----------------------------------------------------------------
+    @app.route('/joining', methods=['GET'])
+    @requires_auth('get:joining')
+    def joining(payload):
+        try:
+            joinings = db.session.query(Employee.id, Employee.name, Department.id, Department.name, Joining.joining_date).join(Joining, Joining.employee_id == Employee.id).join(Department, Department.id == Joining.department_id).all()
+            joining_data = []
+            for joining in joinings:
+                joining_data.append({
+                    "employee_id": joining[0],
+                    "employee_name": joining[1],
+                    "department_id": joining[2],
+                    "department_name": joining[3],
+                    "joining_date": str(joining[4])
+                    })
+            db.session.close()
+                    
+            response = {
+                    'success': True,
+                    'joining': joining_data
+                }
+            return jsonify(response), 200
+    
+        except Exception as e:
+            abort(401)
+            
+#  ----------------------------------------------------------------
+#  Joining - POST
+#  ----------------------------------------------------------------
+    @app.route('/joining', methods=['POST'])
+    @requires_auth('post:joining')
+    def add_joining(payload):
+        try:
+            new_data = request.json
+            employee_id = new_data['employee_id']
+            department_id = new_data['employee_id']
+            joining_date = new_data['joining_date']
+            
+            new_joining = Joining(employee_id=employee_id, department_id=department_id, joining_date=joining_date)
+
+            Joining.insert(new_joining)
+
+            response = {
+                'success': True,
+                'message': 'Joining added successfully',
+                'employee': new_joining.id
+            }
+            return jsonify(response), 201
+
+        except Exception as e:
+            abort(400)
 
 app = create_app()
 
