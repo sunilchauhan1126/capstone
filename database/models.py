@@ -6,6 +6,9 @@ from settings import DB_NAME, DB_PASSWORD, DB_USER, DB_CONN_STRING, DB_USER_REND
 
 #database_path = 'postgresql://{}:{}@{}/{}'.format(DB_USER, DB_PASSWORD, DB_CONN_STRING, DB_NAME)
 database_path = DATABASE_URL
+if database_path.startswith("postgres://"):
+    database_path = database_path.replace("postgres://", "postgresql://", 1)
+    
 db = SQLAlchemy()
 
 """
