@@ -1,8 +1,19 @@
-# Project Capstone
+# Project Capstone FSND
+Udacity Full-Stack Web Developer Nanodegree Program Capstone Project
 
-## Final Project
+## Project Motivation
+The Capstone Employee Project models a company that is responsible for maintaining Employee and departments to those employees. You are an HR Admin within the company and are creating a employee management to simplify and streamline your process. 
 
-Getting Started
+This project is simply a workspace for practicing and showcasing different set of skills related with web development. These include data modelling, API design, authentication and authorization and cloud deployment.
+
+## Getting Started
+
+The project adheres to the PEP 8 style guide and follows common best practices, including:
+
+* Variable and function names are clear.
+* Endpoints are logically named.
+* Code is commented appropriately.
+* Secrets are stored as environment variables.
 
 ## Tools needed
     - VS Code
@@ -23,23 +34,41 @@ pip install -r requirements.txt
 
 This will install all of the required packages we selected within the `requirements.txt` file.
 
-##### Key Dependencies
+### Key Dependencies & Platforms
+
+- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
+
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
+
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
+
+- [Auth0](https://auth0.com/docs/) is the authentication and authorization system we'll use to handle users with different roles with more secure and easy ways
+
+- [PostgreSQL](https://www.postgresql.org/) this project is integrated with a popular relational database PostgreSQL, though other relational databases can be used with a little effort.
+
+- [Heroku](https://www.heroku.com/what) is the cloud platform used for deployment
 
 - [Flask](http://flask.pocoo.org/) is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
-- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries to handle the lightweight sqlite database. Since we want you to focus on auth, we handle the heavy lift for you in `./src/database/models.py`. We recommend skimming this code first so you know how to interface with the Drink model.
-
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
-
-Overview of the Project:
-
-The Application is for Casting agency to organise Actors and Movies.
 
 ## Models
 
-Create 2 models
-   - Actors model with name, age and gender attribute
-   - Movies model with title and release_date attribute
+Create 3 models
+   - Employee model with id, name and designation attribute
+   - Department model with id and name attribute
+   - Joining model with id, employee_id, department_id and joining_date attributes
+
+There are three models:
+* Employee
+	* name
+	* designstion
+* department
+	* name
+* joining
+	* employee_id
+	* department_id
+   * joining_date
 
 This application uses below endpoints
 ----------------------------
@@ -61,10 +90,51 @@ This application uses below endpoints
 
 ----------------------------
 
+### Running Locally
 
-### Setup Auth0
+#### Installing Dependencies
 
-1. Create a new Auth0 Account
+##### Python 3.11
+
+Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+##### Virtual Environment
+
+We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organized. Instructions for setting up a virtual environment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+Once you have your virtual environment setup and running, install dependencies by running:
+
+```bash
+pip install -r requirements.txt
+```
+
+This will install all of the required packages we selected within the `requirements.txt` file.
+
+#### Database Setup
+With Postgres running, restore a database using the `setup.sql` file provided. In terminal run:
+
+```bash
+dropdb capstone
+createdb capstone
+psql capstone < employee_table.psql
+psql capstone < department_table.psql
+psql capstone < joining_table.psql
+```
+
+#### Running Tests
+To run the tests, run
+```bash
+dropdb capstone_test
+createdb capstone_test
+psql capstone < employee_table.psql
+psql capstone < department_table.psql
+psql capstone < joining_table.psql
+python test_capstone.py
+```
+
+#### Auth0 Setup
+
+1. You need to setup an Auth0 account.
 
 2. Select a unique tenant domain
 
@@ -120,7 +190,7 @@ This application uses below endpoints
 
 7. Test your endpoints with [Postman](https://getpostman.com).
    - Register 3 users
-        - Assign Employee Users Role to one user
+        - Assign User Role to one user
         - Assign Manager Leads Role to Another User
         - Assign HR Administrator Role to one more user
    - Sign into each account and make note of the JWT.
@@ -133,6 +203,44 @@ This application uses below endpoints
    
    - Export the collection overwriting the one we've included so that we have your proper JWTs during review!
 
+##### Set JWT Tokens in `setup.sh`
+
+Use the following link to create users and sign them in. This way, you can generate 
+
+```
+https://{{YOUR_DOMAIN}}/authorize?audience={{API_IDENTIFIER}}&response_type=token&client_id={{YOUR_CLIENT_ID}}&redirect_uri={{YOUR_CALLBACK_URI}}
+```
+Environment variables needed: (setup.sh)
+
+   ```bash
+   export AUTH0_DOMAIN="xxxxxxxxxx.auth0.com" # Choose your tenant domain
+   export ALGORITHMS="RS256"
+   export API_AUDIENCE="capstone" # Create an API in Auth0
+
+   ```
+
+
+#### Launching The App
+
+1. Initialize and activate a virtualenv:
+
+   ```bash
+   virtualenv --no-site-packages env_capstone
+   source env_capstone/bin/activate
+   ```
+
+2. Install the dependencies:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+3. Configure database path to connect local postgres database in `models.py`
+
+    ```python
+    database_path = "postgres://{}/{}".format('localhost:5432', 'capstone')
+    ```
+**Note:** For default postgres installation, default user name is `postgres` with no password. Thus, no need to speficify them in database path. You can also omit host and post (localhost:5432). But if you need, you can use this template:
+
 ## Application Login URL
     [Employee Admin Login]
    https://dev-44rtmev4pptlyduw.us.auth0.com/authorize?audience=coffee&response_type=token&client_id=uRTeAazrQmdXUc78TJC3IPKC06wb3O0m&redirect_uri=https://127.0.0.1:8080/login-results
@@ -144,9 +252,27 @@ This application uses below endpoints
 
 ## Deployment Link for the Application 
 
-https://casting-2tvr.onrender.com
+https://capstone-project-xpxs.onrender.com
 
 ## TEST and PostMan Collection
 
 Attach the casting api file 
 - Update the Postman token and run the collections
+
+### Error Handling
+
+Errors are returned as JSON objects in the following format:
+```json
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+The API will return three error types when requests fail:
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Resource Not Found
+- 422: Not Processable 
+- 500: Internal Server Error
