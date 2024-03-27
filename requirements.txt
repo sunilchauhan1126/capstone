@@ -12,6 +12,7 @@ Jinja2
 Mako
 MarkupSafe
 psycopg2-binary
+python-dotenv
 python-dateutil
 python-editor
 six
