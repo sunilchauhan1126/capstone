@@ -162,37 +162,37 @@ python test_capstone.py
 ----------------------------------------
 
 6. Create new roles for:
-   - Employee Users
-        -  `get:employee`
-        -  `get:department`
-        -  `get:joining`
+- Employee Users
+   -  `get:employee`
+   -  `get:department`
+   -  `get:joining`
 
-   - Manager Leads
-        -  `get:employee`
-        -  `get:joining`
-        -  `post:employee`
-        -  `patch:employee`
-        -  `delete:employee`
+- Manager Leads
+   -  `get:employee`
+   -  `get:joining`
+   -  `post:employee`
+   -  `patch:employee`
+   -  `delete:employee`
 
-    - HR Administrator
-        -  `get:employee`
-        -  `get:department`
-        -  `get:joining`
-        -  `post:employee`
-        -  `post:department`
-        -  `post:joining`
-        -  `patch:employee`
-        -  `patch:department`
-        -  `patch:joining`
-        -  `delete:employee`
-        -  `delete:department`
-        - can perform all actions
+- HR Administrator
+   -  `get:employee`
+   -  `get:department`
+   -  `get:joining`
+   -  `post:employee`
+   -  `post:department`
+   -  `post:joining`
+   -  `patch:employee`
+   -  `patch:department`
+   -  `patch:joining`
+   -  `delete:employee`
+   -  `delete:department`
+   - can perform all actions
 
 7. Test your endpoints with [Postman](https://getpostman.com).
    - Register 3 users
-        - Assign User Role to one user
-        - Assign Manager Leads Role to Another User
-        - Assign HR Administrator Role to one more user
+      - Assign User Role to one user
+      - Assign Manager Leads Role to Another User
+      - Assign HR Administrator Role to one more user
    - Sign into each account and make note of the JWT.
 
    - Import the postman collection `Capstone.postman_collection.json`
@@ -218,7 +218,6 @@ Environment variables needed: (setup.sh)
    export API_AUDIENCE="capstone" # Create an API in Auth0
 
    ```
-
 
 #### Launching The App
 
