@@ -11,10 +11,10 @@ from datetime import datetime
 
 
 
-def create_app(active=True, test_config=None):
+def create_app(flag_db=True, test_config=None):
     app = Flask(__name__)
     with app.app_context():
-        if active:
+        if flag_db:
             setup_db(app)
 
     CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -171,7 +171,7 @@ def create_app(active=True, test_config=None):
             return jsonify(response), 200
 
         except Exception as e:
-            abort(404)
+            abort(401)
 
 #  ----------------------------------------------------------------
 #  Department - GET ALL
@@ -300,7 +300,7 @@ def create_app(active=True, test_config=None):
                 'department': department.name
                 }
             db.session.close()
-            return jsonify(response), 201
+            return jsonify(response), 200
 
         except Exception as e:
             db.session.rollback()       

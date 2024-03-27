@@ -3,11 +3,8 @@ from flask import abort, request
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+from settings import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE
 
-
-AUTH0_DOMAIN = "dev-44rtmev4pptlyduw.us.auth0.com"
-ALGORITHMS = ["RS256"]
-API_AUDIENCE = "capstone"
 
 class AuthError(Exception):
     def __init__(self, error, status_code):

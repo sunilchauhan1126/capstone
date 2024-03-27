@@ -1,0 +1,70 @@
+PS C:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone> & "C:/Users/Sunil Chauhan/AppData/Local/Programs/Python/Python312/python.exe" "c:/Users/Sunil Chauhan/OneDrive/Documents/GitHub/capstone/test_capstone.py"
+C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\jose\jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now = timegm(datetime.utcnow().utctimetuple())
+c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\api.py:281: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  department = Department.query.get(department_id)
+.c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\api.py:149: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  employee = Employee.query.get(employee_id)
+.<WrapperTestResponse streamed [200 OK]>
+b'{"departments":[{"id":101,"name":"Department 1"},{"id":102,"name":"Department 2"},{"id":103,"name":"Department 3"},{"id":105,"name":"Department 5"},{"id":106,"name":"Department 6"},{"id":107,"name":"Department 7"},{"id":108,"name":"Department 8"},{"id":109,"name":"Department 9"},{"id":110,"name":"Department 10"}],"success":true}\n'
+.[2024-03-27 19:45:39,369] ERROR in app: Exception on /department [GET]
+Traceback (most recent call last):
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\auth\auth.py", line 137, in wrapper
+    token = get_token_auth_header()
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\auth\auth.py", line 19, in get_token_auth_header
+    raise AuthError(
+auth.auth.AuthError: ({'code': 'authorization_header_missing', 'description': 'Authorization header is expected.'}, 401)
+<WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>
+.<WrapperTestResponse streamed [200 OK]>
+b'{"employees":[{"designation":"Principal Engg","id":1,"name":"Sunil Chauhan"},{"designation":"Testing Manager","id":2,"name":"Rajiv Jindal"},{"designation":"Scrum Master","id":3,"name":"Ankush Chopra"},{"designation":"Designer","id":4,"name":"Anubhav Sehgal"},{"designation":"Designer","id":5,"name":"KP Singh"},{"designation":"HR Admin","id":6,"name":"Sanjeev Bajaj"},{"designation":"Principal Engg","id":7,"name":"Rohit Katoch"},{"designation":"Executive Director","id":9,"name":"Amit Jain"},{"designation":"Developer","id":10,"name":"Rishit Chauhan"}],"success":true}\n'
+.[2024-03-27 19:45:39,687] ERROR in app: Exception on /employee [GET]
+Traceback (most recent call last):
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sunil Chauhan\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\auth\auth.py", line 137, in wrapper
+    token = get_token_auth_header()
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\auth\auth.py", line 19, in get_token_auth_header
+    raise AuthError(
+auth.auth.AuthError: ({'code': 'authorization_header_missing', 'description': 'Authorization header is expected.'}, 401)
+<WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>
+.<WrapperTestResponse streamed [200 OK]>
+.<WrapperTestResponse streamed [200 OK]>
+.c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\api.py:254: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  department = Department.query.get(department_id)
+.c:\Users\Sunil Chauhan\OneDrive\Documents\GitHub\capstone\api.py:121: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  employee = Employee.query.get(employee_id)
+.
+----------------------------------------------------------------------
+Ran 10 tests in 2.219s
+
+O
