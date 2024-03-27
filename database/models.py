@@ -23,9 +23,39 @@ def setup_db(app, database_path=database_path):
 class Joining(db.Model):
     __tablename__ = 'joining'
     id = Column(Integer, primary_key=True)
-    employee_id = Column(Integer, ForeignKey('employee.id'))
-    department_id = Column(Integer, ForeignKey('department.id'))
-    joining_date = Column(DateTime, nullable=False)
+    employee_id = Column(Integer, db.ForeignKey('employee.id'))
+    department_id = Column(Integer, db.ForeignKey('department.id'))
+    joining_date = Column(db.DateTime, nullable=False)
+
+    def __init__(self, employee_id,department_id, joining_date):
+        self.employee_id = employee_id
+        self.department_id = department_id
+        self.joining_date = joining_date
+
+    def __repr__(self):
+        return f"<Joining {self.id}: {self.employee_id}>"
+
+    def format(self):
+        return {
+            'id': self.id,
+            'employee_id': self.employee_id,
+            'department_id': self.department_id,
+            'joining_date': self.joining_date
+            }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def patch(self, employee_id, department_id, joining_date):
+        self.employee_id = employee_id
+        self.department_id = department_id
+        self.joining_date = joining_date
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
     
 class Employee(db.Model):
     __tablename__ = 'employee'
@@ -33,7 +63,7 @@ class Employee(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     designation = Column(String(50))
-    empployee_dept = relationship('Department', secondary=Joining.__tablename__, backref=db.backref('employee', lazy=True))
+    employee_dept = db.relationship('Department', secondary=Joining.__tablename__, backref=db.backref('employee', lazy=True))
 
     def __init__(self, name, designation):
         self.name = name
@@ -47,7 +77,7 @@ class Employee(db.Model):
             'id': self.id,
             'name': self.name,
             'designation': self.designation
-        }
+            }
 
     def insert(self):
         db.session.add(self)
@@ -79,7 +109,7 @@ class Department(db.Model):
         return {
             'id': self.id,
             'name': self.name
-        }
+            }
 
     def insert(self):
         db.session.add(self)
@@ -92,3 +122,7 @@ class Department(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+
+
+

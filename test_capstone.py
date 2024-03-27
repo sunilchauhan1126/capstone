@@ -31,7 +31,7 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.new_employee = {
             "name": "New Test Employee",
-            "designation": New Test Designation"
+            "designation": "New Test Designation"
         }
 
         self.new_department = {
