@@ -3,7 +3,7 @@ import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
 
-from api import create_app
+from app import create_app
 from database.models import setup_db, Employee, Department, Joining
 from settings import TEST_DB_NAME, DB_PASSWORD, DB_USER, DB_CONN_STRING
 from dotenv import load_dotenv

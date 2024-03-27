@@ -1,6 +1,6 @@
 
 from flask import jsonify
-import api as app
+import app as app
 from auth.auth import AuthError
 
 
