@@ -4,9 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from auth.auth import requires_auth
 from database.models import Employee, Department, Joining, setup_db, db
 from sqlalchemy import func
-import dateutil.parser
-import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, request, Response
 from datetime import datetime
 
 
